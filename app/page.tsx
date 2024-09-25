@@ -11,3 +11,16 @@ export default function Home() {
     </main>
   );
 }
+
+
+// TODO:
+// - Add updateBudget cookie function
+// - Add functions for saving budget data
+// - Add delete button for items and budgets
+// - Checks for changing item and budget data
+// - Suspense and skeletons
+// - Draggable
+// - Mobile accessible budget navigator
+// - Totals info on items page
+// - Home page
+// - Profit

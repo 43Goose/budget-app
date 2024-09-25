@@ -1,12 +1,13 @@
 'use client';
-import { Budget } from '@/lib/types';
+import { BudgetType } from '@/lib/types';
 import React, { useState } from 'react'
 import Button from './SiteButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
-export default function BudgetInfo({ defaultInfo }: { defaultInfo: Budget; }) {
-    const [name, setName] = useState<string>(defaultInfo.name);
+export default function Budget({ defaultInfo }: { defaultInfo: BudgetType; }) {
+    const [name, setName] = useState<string>(defaultInfo.info.name);
+
     return (
         <div className='w-full h-12 flex items-center justify-between px-4 bg-white rounded-xl'>
             <p className='text-2xl text-emerald-500 font-bold'>{name}</p>

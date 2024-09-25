@@ -19,6 +19,7 @@ export default function Item({ defaultInfo }: { defaultInfo: BudgetItem; }) {
                         className='pl-4 pr-1 rounded-lg border-2 border-black outline-none transition-colors focus:border-emerald-500'
                         contentEditable
                         onInput={(e) => setQuantity(Number(e.currentTarget.textContent))}
+                        suppressContentEditableWarning
                     >{quantity}</p>
                     <div className='text-emerald-500 hover:cursor-pointer' onClick={() => setQuantity(quantity - 1)}>
                         <FontAwesomeIcon icon={faMinus} />
@@ -34,6 +35,7 @@ export default function Item({ defaultInfo }: { defaultInfo: BudgetItem; }) {
                     className='pl-4 pr-1 rounded-lg border-2 border-black outline-none transition-colors focus:border-emerald-500'
                     contentEditable
                     onInput={(e) => setPrice(Number(e.currentTarget.textContent))}
+                    suppressContentEditableWarning
                 >{price}</p>
             </div>
         </div>

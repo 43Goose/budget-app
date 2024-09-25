@@ -3,12 +3,14 @@ import { BudgetItem } from '@/lib/types';
 import React, { useState } from 'react'
 import Item from './ui/BudgetItem';
 import Button from './ui/SiteButton';
+import { getCookie } from '@/lib/cookies';
 
 export default function BudgetScreen() {
     const [items, setItems] = useState<BudgetItem[]>([]);
 
-    const addItem = () => {
+    const addItem = async () => {
         setItems([...items, { id: items.length, name: 'New Item', price: 0, quantity: 0 }]);
+        console.log(await getCookie('test'));
     }
 
     return (

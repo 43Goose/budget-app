@@ -1,6 +1,9 @@
-export interface Budget {
+export interface BudgetType {
     id: string;
-    name: string;
+    info: {
+        name: string;
+        items: BudgetItem[];
+    }
 }
 
 export interface BudgetItem {
