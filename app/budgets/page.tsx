@@ -1,21 +1,12 @@
-import BudgetList from '@/components/BudgetList'
-import BudgetScreen from '@/components/BudgetScreen'
+import BudgetsContainer from '@/components/BudgetsContainer';
 import React from 'react'
 
 export default function Budgets() {
+    // User accounts and auth will be added in the future
 
     return (
         <main className='min-h-dvh'>
-            <div className='relative w-full min-h-dvh flex'>
-                <div className='w-96 h-dvh'>
-                    {/* budget list */}
-                    <BudgetList />
-                </div>
-                <div className='grow min-h-full py-16'>
-                    {/* current budget screen (default asks user to select a budget) */}
-                    <BudgetScreen />
-                </div>
-            </div>
+            <BudgetsContainer />
         </main>
     )
 }

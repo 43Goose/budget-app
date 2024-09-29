@@ -1,28 +1,20 @@
 'use client';
-import { BudgetType } from '@/lib/types';
-import React, { useState } from 'react'
+import React from 'react'
 import Button from './ui/SiteButton';
-import { generateBudgetId } from '@/lib/utils';
 import Budget from './ui/Budget';
-import { getAllBudgets } from '@/lib/cookies';
+import { BudgetType } from '@/lib/types';
 
-export default function BudgetList() {
-    const [budgets, setBudgets] = useState<BudgetType[]>([]); // move list of budgets into client component and make this fetch initial budgets
-
-    const addBudget = async () => {
-        setBudgets([...budgets, { id: generateBudgetId(), info: { name: 'New Budget', items: [] } }]);
-        console.log(await getAllBudgets());
-    }
+export default function BudgetList({ budgets, currentBudget, addFn, viewFn }: { budgets: BudgetType[]; currentBudget: string | null; addFn: () => void; viewFn: (id: string) => void }) {
 
     return (
         <div className='relative w-full min-h-full bg-zinc-200 shadow-lg shadow-zinc-500'>
-            <div className='w-full p-4'>
+            <div className='w-full p-4 flex flex-col gap-2'>
                 {budgets.map((budget) => (
-                    <Budget key={budget.id} defaultInfo={budget} />
+                    <Budget key={budget.id} budget={budget} viewFn={viewFn} current={budget.id === currentBudget} />
                 ))}
             </div>
             <div className='absolute bottom-0 p-4 w-full'>
-                <Button text='Add Budget' clickFn={addBudget} />
+                <Button clickFn={addFn} >{'Add Budget'}</Button>
             </div>
         </div>
     )

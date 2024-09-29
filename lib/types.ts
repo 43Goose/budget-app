@@ -7,7 +7,8 @@ export interface BudgetType {
 }
 
 export interface BudgetItem {
-    id: number;
+    [key: string]: string | number;
+    id: string;
     name: string;
     price: number;
     quantity: number;
