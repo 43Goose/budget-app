@@ -43,6 +43,15 @@ export const saveBudget = async (id: string, newBudget: BudgetType) => {
     await cookies().set('budgets', JSON.stringify(budgets));
 }
 
+export const reorderBudgets = async (newOrder: BudgetType[]) => {
+    const orderedBudgets: { [key: string]: BudgetType } = {};
+    newOrder.forEach(b => {
+        orderedBudgets[b.id] = b;
+    });
+
+    await cookies().set('budgets', JSON.stringify(orderedBudgets));
+}
+
 export const deleteBudget = async (id: string) => {
     const budgets = JSON.parse(await cookies().get('budgets')!.value);
     delete budgets[id];

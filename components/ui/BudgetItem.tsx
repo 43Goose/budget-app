@@ -8,12 +8,10 @@ import { Reorder } from 'framer-motion';
 
 export default function Item({
     item,
-    orderInList,
     editFn,
     removeFn,
 }: {
     item: BudgetItem;
-    orderInList: number;
     editFn: (id: string, change: { key: string; newValue: string | number; }) => void;
     removeFn: () => void;
 }) {
@@ -30,42 +28,48 @@ export default function Item({
     }
 
     return (
-        <Reorder.Item value={orderInList} className='w-full h-12 my-2 flex items-center justify-between px-4 text-xl bg-white rounded-xl hover:cursor-grab' >
-            <div className='flex items-center gap-2'>
-                <input
-                    className='appearance-none w-32 pl-1 rounded-lg border-2 border-transparent outline-none transition-colors hover:border-black focus:border-emerald-500'
-                    type='text'
-                    value={item.name}
-                    onChange={(e) => changeName(e.target.value)}
-                />
-                <FontAwesomeIcon className='text-emerald-500' icon={faMultiply} />
-                <div className='flex items-center gap-4'>
+        <Reorder.Item
+            value={item}
+            className='relative w-full h-auto py-1 my-2 flex flex-col justify-between gap-1 px-4 text-xl bg-white rounded-xl hover:cursor-grab active:cursor-grabbing md:h-12 md:py-0 md:flex-row md:gap-0'
+            style={{ touchAction: "none" }}
+        >
+            <input
+                className='appearance-none w-32 pl-1 rounded-lg border-2 border-transparent outline-none transition-colors hover:border-black focus:border-emerald-500'
+                type='text'
+                value={item.name}
+                onChange={(e) => changeName(e.target.value)}
+            />
+            <div className='grow flex items-center justify-between'>
+                <div className='flex items-center gap-1 md:gap-2'>
+                    <FontAwesomeIcon className='text-emerald-500' icon={faMultiply} />
+                    <div className='flex items-center gap-2 md:gap-4'>
+                        <input
+                            className='appearance-none w-9 pr-1 text-right rounded-lg border-2 border-black outline-none transition-colors focus:border-emerald-500'
+                            type='number'
+                            value={item.quantity}
+                            onChange={(e) => changeQuantity(Number(e.target.value))}
+                        />
+                        <div className='text-emerald-500 hover:cursor-pointer' onClick={() => changeQuantity(item.quantity - 1)}>
+                            <FontAwesomeIcon icon={faMinus} />
+                        </div>
+                        <div className='text-emerald-500 hover:cursor-pointer' onClick={() => changeQuantity(item.quantity + 1)}>
+                            <FontAwesomeIcon icon={faPlus} />
+                        </div>
+                    </div>
+                </div>
+                <div className='flex items-center gap-1 md:gap-2'>
+                    <FontAwesomeIcon className='text-emerald-500' icon={faDollar} />
                     <input
                         className='appearance-none w-9 pr-1 text-right rounded-lg border-2 border-black outline-none transition-colors focus:border-emerald-500'
                         type='number'
-                        value={item.quantity}
-                        onChange={(e) => changeQuantity(Number(e.target.value))}
+                        value={item.price}
+                        onChange={(e) => changePrice(Number(e.target.value))}
                     />
-                    <div className='text-emerald-500 hover:cursor-pointer' onClick={() => changeQuantity(item.quantity - 1)}>
-                        <FontAwesomeIcon icon={faMinus} />
+                    <div className='w-9'>
+                        <Button clickFn={removeFn} size='md' variant='text' color='error' >
+                            <FontAwesomeIcon icon={faTrashCan} />
+                        </Button>
                     </div>
-                    <div className='text-emerald-500 hover:cursor-pointer' onClick={() => changeQuantity(item.quantity + 1)}>
-                        <FontAwesomeIcon icon={faPlus} />
-                    </div>
-                </div>
-            </div>
-            <div className='flex items-center gap-2'>
-                <FontAwesomeIcon className='text-emerald-500' icon={faDollar} />
-                <input
-                    className='appearance-none w-9 pr-1 text-right rounded-lg border-2 border-black outline-none transition-colors focus:border-emerald-500'
-                    type='number'
-                    value={item.price}
-                    onChange={(e) => changePrice(Number(e.target.value))}
-                />
-                <div className='w-9'>
-                    <Button clickFn={removeFn} size='md' variant='text' color='error' >
-                        <FontAwesomeIcon icon={faTrashCan} />
-                    </Button>
                 </div>
             </div>
         </Reorder.Item>

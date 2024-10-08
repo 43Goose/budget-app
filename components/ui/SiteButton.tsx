@@ -49,7 +49,7 @@ export default function Button({
     return (
         <a
             className={clsx(
-                'block w-full text-center transition-colors hover:cursor-pointer active:scale-95',
+                'block w-full text-center transition-colors select-none hover:cursor-pointer active:scale-95',
                 variant ? variants[variant] : variants.filled,
                 size ? sizes[size] : sizes.lg,
             )}

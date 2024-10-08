@@ -18,7 +18,6 @@ export default function BudgetScreen({
     deleteFn: (id: string) => void;
 }) {
     const [items, setItems] = useState<BudgetItem[]>(currentBudget.info.items);
-    const [listOrder, setListOrder] = useState<number[]>(currentBudget.info.items.map((item, index) => index));
     const [name, setName] = useState(currentBudget.info.name);
 
     useEffect(() => {
@@ -26,7 +25,6 @@ export default function BudgetScreen({
             if (currentBudget) {
                 setName(currentBudget.info.name);
                 setItems(currentBudget.info.items);
-                setListOrder(currentBudget.info.items.map((item, index) => index));
             }
         }
 
@@ -40,7 +38,7 @@ export default function BudgetScreen({
             id = generateId();
         }
 
-        setItems([...items, { id: id, name: 'New Item', price: 0, quantity: 0 }]);
+        setItems([...items, { id, name: 'New Item', price: 0, quantity: 0 }]);
     }
 
     const editItem = (id: string, change: { key: string, newValue: string | number }) => {
@@ -52,14 +50,15 @@ export default function BudgetScreen({
 
     const removeItem = (item: BudgetItem) => {
         const newItems = [...items];
-        newItems.splice(newItems.indexOf(item), 1);
+        const itemsIndex = newItems.indexOf(item);
+        newItems.splice(itemsIndex, 1);
 
         setItems(newItems);
     }
 
     const handleSave = () => {
         if (currentBudget) {
-            saveFn(currentBudget.id, { id: currentBudget.id, info: { name: name, items: items } });
+            saveFn(currentBudget.id, { id: currentBudget.id, info: { name, items } });
         }
     }
 
@@ -81,14 +80,13 @@ export default function BudgetScreen({
                     />
                     <div className='mb-6'>
                         {items.length > 0 ?
-                            <Reorder.Group axis='y' values={listOrder} onReorder={setListOrder}>
-                                {listOrder.map(n => (
+                            <Reorder.Group axis='y' values={items} onReorder={setItems}>
+                                {items.map(item => (
                                     <Item
-                                        key={n}
-                                        item={items[n]}
-                                        orderInList={n}
+                                        key={item.id}
+                                        item={item}
                                         editFn={editItem}
-                                        removeFn={() => removeItem(items[n])}
+                                        removeFn={() => removeItem(item)}
                                     />
                                 ))}
                             </Reorder.Group>
@@ -96,18 +94,33 @@ export default function BudgetScreen({
                         }
                     </div>
                 </div>
-                <div className='w-full flex'>
-                    <div className='w-1/2'><Button clickFn={addItem} >{'Add Item'}</Button></div>
-                    <div className='w-1/2 flex justify-end gap-2'>
-                        <div className='w-12'>
-                            <Button clickFn={handleSave} variant='text' color='success' >
-                                <FontAwesomeIcon icon={faFloppyDisk} />
-                            </Button>
+                <div className='w-full px-4'>
+                    <div className='w-full my-2'>
+                        {items.map(item => (
+                            <div key={item.id} className='w-full flex text-right text-xl'>
+                                <h2 className='w-1/2 md:w-1/3'>{item.name + ' x ' + item.quantity}</h2>
+                                <h2 className='w-1/2 md:w-2/3 text-emerald-500 font-bold'>{'$' + (item.price * item.quantity)}</h2>
+                            </div>
+                        ))}
+                        <div className='w-full h-0.5 my-1 bg-emerald-500' />
+                        <div className='w-full flex text-right text-2xl font-bold'>
+                            <h2 className='w-1/2 md:w-1/3'>Total</h2>
+                            <h2 className='w-1/2 md:w-2/3 text-emerald-500'>{items.length > 0 ? ('$' + items.map(i => i.price * i.quantity).reduce((prev, cur) => prev + cur)) : '$0'}</h2>
                         </div>
-                        <div className='w-12'>
-                            <Button clickFn={handleDelete} variant='text' color='error' >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </Button>
+                    </div>
+                    <div className='w-full flex'>
+                        <div className='w-1/2'><Button clickFn={addItem} >{'Add Item'}</Button></div>
+                        <div className='w-1/2 flex justify-end gap-2'>
+                            <div className='w-12'>
+                                <Button clickFn={handleSave} variant='text' color='success' >
+                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                </Button>
+                            </div>
+                            <div className='w-12'>
+                                <Button clickFn={handleDelete} variant='text' color='error' >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
